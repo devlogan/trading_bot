@@ -1,0 +1,63 @@
+# ===================
+# 🔒 Secrets and Config
+# ===================
+.env
+config.py
+
+# ===================
+# 🗑️ Byte-compiled / Caches
+# ===================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ===================
+# 🚀 Virtual Environment
+# ===================
+tradebot_env/
+venv/
+.env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ===================
+# 📊 Data Files
+# ===================
+*.csv
+*.log
+*.sqlite3
+*.db
+balance_over_time.csv
+trading_bot.log
+
+# ===================
+# 🔎 Logs and Debug Files
+# ===================
+*.log
+*.out
+*.err
+nohup.out
+
+# ===================
+# 💻 OS Files
+# ===================
+.DS_Store
+Thumbs.db
+
+# ===================
+# 🌐 Docker Files
+# ===================
+docker-compose.yml
+.Dockerfile
+
+# ===================
+# 📦 Dependencies
+# ===================
+*.egg-info/
+dist/
+build/
+
+# ===================
+# 🔎 VSCode Settings (Optional)
+# ===================
+.vscode/
