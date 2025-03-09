@@ -25,8 +25,8 @@ SL_MULTIPLIER = 1.5  # Stop Loss multiplier based on ATR
 TP_MULTIPLIER = 2  # Take Profit multiplier based on ATR
 
 # ✅ EMA Configuration
-EMA_SHORT_PERIOD = 20
-EMA_LONG_PERIOD = 50
+EMA_SHORT_PERIOD = 9
+EMA_LONG_PERIOD = 21
 
 # ✅ Rolling window for breakout confirmation
 BREAKOUT_WINDOW = 10
