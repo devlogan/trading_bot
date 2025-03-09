@@ -16,7 +16,8 @@ def trade_trend_breakout(df=None):
     df = calculate_atr(df)
     df = generate_signals(df)
 
-    last_row = df.iloc[-1]
+    # ✅ Use second-last row instead of last row
+    last_row = df.iloc[-2]  # <-- FIXED HERE
     buy_signal = bool(last_row["buy_signal"])
     sell_signal = bool(last_row["sell_signal"])
 
@@ -65,3 +66,4 @@ def trade_trend_breakout(df=None):
         place_tp_sl("BTCUSDT", quantity, stop_loss, take_profit, "SELL")
 
     return df
+
