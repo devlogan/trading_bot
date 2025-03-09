@@ -17,20 +17,22 @@ def trade_trend_breakout(df=None):
     df = generate_signals(df)
 
     # ✅ Use second-last row instead of last row
-    last_row = df.iloc[-2]  # <-- FIXED HERE
+    last_row = df.iloc[-2]  
     buy_signal = bool(last_row["buy_signal"])
     sell_signal = bool(last_row["sell_signal"])
 
     if buy_signal:
         entry_price = float(last_row["close"])
         atr = float(last_row["ATR"])
-        quantity = get_trade_quantity(50, entry_price, 10)
-
+        
+        # ✅ Calculate stop loss before calling get_trade_quantity
         stop_loss = entry_price - (1.5 * atr)
         take_profit = entry_price + (2 * atr)
 
+        # ✅ Pass stop_loss to get_trade_quantity
+        quantity = get_trade_quantity(50, 1, entry_price, stop_loss, 10)
+
         if not TEST_MODE:
-            # ✅ Send Telegram notification in live trading only
             send_telegram_message(
                 f"📈 *BUY SIGNAL DETECTED*\n"
                 f"Price: `{entry_price}`\n"
@@ -41,16 +43,18 @@ def trade_trend_breakout(df=None):
 
         print(f"📈 Buy Signal at {entry_price}, SL: {stop_loss}, TP: {take_profit}")
 
-        # ✅ Set SL/TP even in backtesting
         place_tp_sl("BTCUSDT", quantity, stop_loss, take_profit, "BUY")
 
     elif sell_signal:
         entry_price = float(last_row["close"])
         atr = float(last_row["ATR"])
-        quantity = get_trade_quantity(50, entry_price, 10)
 
+        # ✅ Calculate stop loss before calling get_trade_quantity
         stop_loss = entry_price + (1.5 * atr)
         take_profit = entry_price - (2 * atr)
+
+        # ✅ Pass stop_loss to get_trade_quantity
+        quantity = get_trade_quantity(50, 1, entry_price, stop_loss, 10)
 
         if not TEST_MODE:
             send_telegram_message(
