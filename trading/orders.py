@@ -1,10 +1,10 @@
 from binance.client import Client
 from utils.constants import BINANCE_API_KEY, BINANCE_SECRET_KEY
-
-client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
-
 from indicators.moving_averages import calculate_ema
 from indicators.atr import calculate_atr
+from utils.constants import EMA_SHORT_PERIOD, EMA_LONG_PERIOD, BREAKOUT_WINDOW
+
+client = Client(BINANCE_API_KEY, BINANCE_SECRET_KEY)
 
 def generate_signals(df):
     """
@@ -13,30 +13,48 @@ def generate_signals(df):
     df = calculate_ema(df)
     df = calculate_atr(df)
 
-    # Generate raw signals based on EMA crossover
-    df["raw_buy_signal"] = (df["EMA_50"] > df["EMA_200"]) & (df["close"] > df["high"].rolling(20).max().shift(1))
-    df["raw_sell_signal"] = (df["EMA_50"] < df["EMA_200"]) & (df["close"] < df["low"].rolling(20).min().shift(1))
+    # ✅ Dynamic EMA names based on constants
+    ema_short = f"EMA_{EMA_SHORT_PERIOD}"
+    ema_long = f"EMA_{EMA_LONG_PERIOD}"
 
-    # Initialize buy/sell signal columns
+    # ✅ Generate raw signals based on EMA crossover and breakout
+    df["raw_buy_signal"] = (
+        (df[ema_short] > df[ema_long]) &
+        (df["close"] > df["high"].rolling(BREAKOUT_WINDOW).max().shift(1))
+    )
+    
+    df["raw_sell_signal"] = (
+        (df[ema_short] < df[ema_long]) &
+        (df["close"] < df["low"].rolling(BREAKOUT_WINDOW).min().shift(1))
+    )
+
+    # ✅ Initialize buy/sell signal columns
     df["buy_signal"] = False
     df["sell_signal"] = False
 
-    # Track last executed trade (buy or sell)
-    last_trade = None  # "BUY" or "SELL"
+    # ✅ Track last executed trade to prevent consecutive same-side signals
+    last_trade = None
+    
+    if df["raw_buy_signal"].iloc[-2]:
+        last_trade = "BUY"
+    elif df["raw_sell_signal"].iloc[-2]:
+        last_trade = "SELL"
 
     for i in range(1, len(df)):
+        # ✅ Buy signal only if last trade was NOT a BUY
         if df["raw_buy_signal"].iloc[i] and last_trade != "BUY":
-            df.at[df.index[i], "buy_signal"] = True
-            last_trade = "BUY"  # Mark that a buy was executed
+            df.loc[df.index[i], "buy_signal"] = True
+            last_trade = "BUY"
 
+        # ✅ Sell signal only if last trade was NOT a SELL
         elif df["raw_sell_signal"].iloc[i] and last_trade != "SELL":
-            df.at[df.index[i], "sell_signal"] = True
-            last_trade = "SELL"  # Mark that a sell was executed
+            df.loc[df.index[i], "sell_signal"] = True
+            last_trade = "SELL"
 
+    # ✅ Debug output to verify signal generation
     print(f"DEBUG: Buy Signals: {df['buy_signal'].sum()}, Sell Signals: {df['sell_signal'].sum()}")
 
     return df
-
 
 def get_trade_quantity(balance, risk_percent, entry_price, stop_loss, leverage=10):
     """Dynamically calculate position size based on risk percentage."""
