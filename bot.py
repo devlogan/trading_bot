@@ -5,7 +5,6 @@ from utils.constants import WAIT_TIME
 
 logger = setup_logger("trading_bot")
 
-
 while True:
     try:
         logger.info("🔍 Checking for trade opportunities...")
@@ -14,4 +13,4 @@ while True:
         time.sleep(WAIT_TIME)  # Check every 5 minutes
     except Exception as e:
         logger.error(f"⚠️ Error: {e}")
-        time.sleep(10)  # Wait 10 sec before retrying after an error
+        time.sleep(120)  # Wait 120 sec before retrying after an error

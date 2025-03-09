@@ -61,3 +61,5 @@ build/
 # 🔎 VSCode Settings (Optional)
 # ===================
 .vscode/
+
+tests/

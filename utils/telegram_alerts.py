@@ -8,8 +8,6 @@ def send_telegram_message(message):
         "text": message,
         "parse_mode": "Markdown"
     }
-
-    print(payload)
     response = requests.post(url, json=payload)
     if response.status_code != 200:
         print(f"❌ Error sending message: {response.text}")

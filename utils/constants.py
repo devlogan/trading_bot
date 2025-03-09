@@ -14,27 +14,28 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # ✅ General Config
 SYMBOL = "BTCUSDT"
-INTERVAL = "5m"
+INTERVAL = "15m"  # 15-minute candles = Best for EMA + ATR combo
 LIMIT = 100
-WAIT_TIME = 60
+WAIT_TIME = 3600  # Check every 3060 seconds
 
 # ✅ Trading Settings
-TRADE_AMOUNT = 50  # % of capital per trade
-LEVERAGE = 10
-SL_MULTIPLIER = 1.5  # Stop Loss multiplier based on ATR
-TP_MULTIPLIER = 2  # Take Profit multiplier based on ATR
+RISK_PERCENT = 60  # % of capital per trade
+LEVERAGE = 10  # Controlled leverage for lower risk
+SL_MULTIPLIER = 2  # Slightly loose SL for trend-following
+TP_MULTIPLIER = 3  # Take profit at 3x ATR-based volatility
 
 # ✅ EMA Configuration
-EMA_SHORT_PERIOD = 9
-EMA_LONG_PERIOD = 21
+EMA_SHORT_PERIOD = 20  # Faster EMA for crossover
+EMA_LONG_PERIOD = 50  # Slower EMA for trend detection
 
-# ✅ Rolling window for breakout confirmation
-BREAKOUT_WINDOW = 10
+# ✅ Breakout Configuration
+BREAKOUT_WINDOW = 20  # Look at last 20 candles for breakout confirmation
 
 # ✅ Modes
-TEST_MODE = False  # Set to True for backtesting/simulation
+TEST_MODE = False
 
 # ✅ Logging Config
 LOG_LEVEL = "INFO"
+
 
 
