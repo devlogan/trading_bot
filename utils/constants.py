@@ -16,7 +16,7 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 SYMBOL = "BTCUSDT"
 INTERVAL = "15m"  # 15-minute candles = Best for EMA + ATR combo
 LIMIT = 100
-WAIT_TIME = 3600  # Check every 3060 seconds
+WAIT_TIME = 300  # Check every 300 seconds, 5 minutes
 
 # ✅ Trading Settings
 RISK_PERCENT = 60  # % of capital per trade

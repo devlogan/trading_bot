@@ -18,9 +18,7 @@ def trade_trend_breakout(df=None):
     if df is None:
         df = get_historical_data()
 
-    # ✅ Calculate indicators
-    df = calculate_ema(df)
-    df = calculate_atr(df)
+    # ✅ Generate signals
     df = generate_signals(df)
 
     # ✅ Use second-last row instead of last row
